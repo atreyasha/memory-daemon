@@ -99,7 +99,7 @@ This project offers a simple shell-based installation script.
     #? 4
     ```
 
-Now, the memory daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/mail.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
+    Now, the memory daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/mail.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
 
 ### Uninstallation
 
