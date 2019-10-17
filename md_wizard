@@ -20,7 +20,7 @@ function install_mem_daemon(){
     echo  "checking for existence of $DIR and /home/$LOCAL_USER/bin; creating where necessary... "
     mkdir -p $DIR
     mkdir -p "/home/$LOCAL_USER/bin"
-    echo "copying default md.configuration to $DIR..."
+    echo "copying default md.conf to $DIR..."
     if [ -f $DIR/md.conf ]; then
         read -rep "keep previous md.conf configuration? (y|n): " ans
         if [ $ans == "n" ]; then
