@@ -33,7 +33,7 @@ install_mem_daemon(){
         echo -n "... done"
     fi
     echo "copying executables to /home/$USER/bin..."
-    cp mem_daemon.sh /home/$USER/bin/mem_daemon
+    cp mem_daemon /home/$USER/bin/mem_daemon
     cp mem_daemon_mail.py /home/$USER/bin/mem_daemon_mail
     chmod +x /home/$USER/bin/mem_daemon_mail
     echo "installation complete! fill out $DIR/mail.conf with email-related details to use this service"
