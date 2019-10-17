@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # base configuration directory
 LOCAL_USER=$(id -un)
@@ -74,7 +75,7 @@ select option in "${options[@]}"; do
 	         break
 	         ;;
         4) /home/$LOCAL_USER/bin/mem_daemon 1 0
-           if [ $(echo $?) -eq 2 ] || [ $(echo $?) -eq 1 ]; then
+           if [ $(echo $?) -eq 2 ]; then
               echo "please fill out $DIR/md.conf before setting up a crontab"
               exit 1
            fi
