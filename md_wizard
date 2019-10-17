@@ -79,7 +79,7 @@ select option in "${options[@]}"; do
               echo "please fill out $DIR/md.conf before setting up a crontab"
               exit 1
            fi
-           if [ -z $(crontab -l | grep "mem_daemon") ]; then
+           if [ -z "$(crontab -l | grep mem_daemon)" ]; then
                 # write out current crontab
                 read -rep "With what periodicity should memory be checked (in minutes) ?: " ans
                 crontab -l > $DIR/mycron
@@ -88,6 +88,8 @@ select option in "${options[@]}"; do
                 # install new cron file
                 crontab $DIR/mycron
                 rm $DIR/mycron
+           else
+                echo "crontab already installed"
            fi
            break
            ;;
