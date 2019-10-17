@@ -13,6 +13,7 @@ options=(
     "Uninstall memory daemon"
 )
 
+# installation function
 install_mem_daemon(){
     echo  "checking for existence of $DIR and /home/$USER/bin; creating where necessary... "
     mkdir -p $DIR
@@ -40,6 +41,7 @@ install_mem_daemon(){
     echo "installation complete! fill out $DIR/mail.conf with email-related details to use this service"
 }
 
+# uninstallation function
 uninstall_mem_daemon(){
     # remove executables
     echo "removing executables from /home/$USER/bin..."

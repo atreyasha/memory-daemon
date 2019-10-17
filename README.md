@@ -110,4 +110,4 @@ $ ./md_wizard
 #? 5
 ```
 
-This will remove the transferred binaries and will prompt the user to check if the relevant `crontab` should be removed.
+This will remove the transferred binaries and will prompt the user to decide if the relevant `crontab` should be removed.

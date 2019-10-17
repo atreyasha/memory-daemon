@@ -38,8 +38,10 @@ if [ -f $DIR/mail.conf ];then
                     echo "killing: \n $proc"
                     kill $pid
                 fi
+                # check if the high RAM process is own
                 self=1
             else
+                # check if the high RAM process is from other user
                 self=0
             fi
             # send out email
