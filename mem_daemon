@@ -15,24 +15,26 @@ if [ "$#" -ne 2 ]; then
     display_help
 fi
 
+# get local user even if running on crontab
+LOCAL_USER=$(id -un)
 # declare config directory
-DIR="/home/$USER/.config/mem_daemon"
+DIR="/home/$LOCAL_USER/.config/mem_daemon"
 
 # start main conditional process
-if [ -f $DIR/mail.conf ];then
+if [ -f $DIR/md.conf ];then
     # read key parameters for memory daemon
     if [ $1 -eq 1 ] && [ $2 -eq 1 ]; then
         max_threshold=0
     else
-        max_threshold=$(grep "threshold" $DIR/mail.conf | awk '{print $2}')
+        max_threshold=$(grep "threshold" $DIR/md.conf | awk '{print $2}')
     fi
-    receiver=$(grep "receiver" $DIR/mail.conf | awk '{print $2}')
-    sender=$(grep "sender" $DIR/mail.conf | awk '{print $2}')
-    pass=$(grep "pass" $DIR/mail.conf | awk '{print $2}')
-    smtp=$(grep "smtp" $DIR/mail.conf | awk '{print $2}')
-    port=$(grep "port" $DIR/mail.conf | awk '{print $2}')
+    receiver=$(grep "receiver" $DIR/md.conf | awk '{print $2}')
+    sender=$(grep "sender" $DIR/md.conf | awk '{print $2}')
+    pass=$(grep "pass" $DIR/md.conf | awk '{print $2}')
+    smtp=$(grep "smtp" $DIR/md.conf | awk '{print $2}')
+    port=$(grep "port" $DIR/md.conf | awk '{print $2}')
     if [ -z $max_threshold ] || [ -z $receiver ] || [ -z $sender ] || [ -z $pass ] || [ -z $smtp ] || [ -z $port ]; then
-        echo "missing parameters in $DIR/mail.conf, please ensure all parameters are defined"
+        echo "missing parameters in $DIR/md.conf, please ensure all parameters are defined"
         exit 2
     else
         # check if memory threshold is exceeded
@@ -46,7 +48,7 @@ if [ -f $DIR/mail.conf ];then
             user=$(echo "$proc" | awk 'FNR == 2 {print $2}')
             pid=$(echo "$proc" | awk 'FNR == 2 {print $1}')
             nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
-            if [[ "$user" == "$(whoami)" ]]; then
+            if [[ "$user" == "$LOCAL_USER" ]]; then
                 if [ $1 -eq 0 ]; then
                     echo "killing: \n $proc"
                     kill $pid
@@ -59,7 +61,8 @@ if [ -f $DIR/mail.conf ];then
             fi
             # send out email
             if [ $2 -eq 1 ]; then
-            /home/$USER/bin/mem_daemon_mail --receiver "$receiver" --sender "$sender" \
+            echo "sending email to $receiver"
+            /home/$LOCAL_USER/bin/mem_daemon_mail --receiver "$receiver" --sender "$sender" \
                     --password "$pass" --text "$proc" --smtp "$smtp" --port "$port" \
                     --threshold "$max_threshold" --columns-log $nc --selfie $self
             fi
@@ -68,6 +71,6 @@ if [ -f $DIR/mail.conf ];then
         exit 0
     fi
 else
-    echo "$DIR/mail.conf does not exist"
+    echo "$DIR/md.conf does not exist"
     exit 1
 fi

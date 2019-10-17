@@ -8,7 +8,7 @@ COLUMNS=12
 # option menu
 options=(
     "Install memory daemon"
-    "Edit mail.conf"
+    "Edit md.conf"
     "Test memory daemon with dummy trigger"
     "Add crontab for memory daemon"
     "Uninstall memory daemon"
@@ -19,15 +19,15 @@ function install_mem_daemon(){
     echo  "checking for existence of $DIR and /home/$USER/bin; creating where necessary... "
     mkdir -p $DIR
     mkdir -p "/home/$USER/bin"
-    echo "copying default mail configuration to $DIR..."
-    if [ -f $DIR/mail.conf ]; then
-        read -rep "keep previous mail.conf configuration? (y|n): " ans
+    echo "copying default md.configuration to $DIR..."
+    if [ -f $DIR/md.conf ]; then
+        read -rep "keep previous md.conf configuration? (y|n): " ans
         if [ $ans == "n" ]; then
-           mv $DIR/mail.conf $DIR/mail.conf.bak
-           cp ./aux/mail.conf $DIR/mail.conf
+           mv $DIR/md.conf $DIR/md.conf.bak
+           cp ./aux/md.conf $DIR/md.conf
         fi
     else
-        cp ./aux/mail.conf $DIR/mail.conf
+        cp ./aux/md.conf $DIR/md.conf
     fi
     if [ -z $(echo $PATH | grep "/home/$USER/bin") ]; then
         echo "adding /home/$USER/bin to system path"
@@ -38,7 +38,7 @@ function install_mem_daemon(){
     cp mem_daemon /home/$USER/bin/mem_daemon
     cp mem_daemon_mail.py /home/$USER/bin/mem_daemon_mail
     chmod +x /home/$USER/bin/mem_daemon_mail
-    echo "installation complete! fill out $DIR/mail.conf with email-related details to use this service"
+    echo "installation complete! fill out $DIR/md.conf with email-related details to use this service"
 }
 
 # uninstallation function
@@ -65,7 +65,7 @@ select option in "${options[@]}"; do
         1) install_mem_daemon
            break
            ;;
-        2) vim $DIR/mail.conf
+        2) vim $DIR/md.conf
 	         break
 	         ;;
         3) echo "An email will be sent to your specified address, but fret not; no process will be killed"
@@ -73,8 +73,8 @@ select option in "${options[@]}"; do
 	         break
 	         ;;
         4) /home/$USER/bin/mem_daemon 1 0
-           if [ $(echo $?) -eq 2 ]; then
-              echo "please fill out $DIR/mail.conf before setting up a crontab"
+           if [ $(echo $?) -eq 2 ] || [ $(echo $?) -eq 1 ]; then
+              echo "please fill out $DIR/md.conf before setting up a crontab"
               exit 1
            fi
            if [ -z $(crontab -l | grep "mem_daemon") ]; then
