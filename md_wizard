@@ -24,7 +24,7 @@ function install_mem_daemon(){
     echo "copying default md.conf to $DIR..."
     if [ -f $DIR/md.conf ]; then
         read -rep "keep previous md.conf configuration? (y|n): " ans
-        if [ $ans == "n" ]; then
+        if [ "$ans" == "n" ]; then
            mv $DIR/md.conf $DIR/md.conf.bak
            cp ./aux/md.conf $DIR/md.conf
         fi
@@ -51,7 +51,7 @@ function uninstall_mem_daemon(){
     rm -f /home/$LOCAL_USER/bin/mem_daemon_mail
     # remove crontab
     read -rep "remove mem_daemon crontab (if it exists)? (y|n): " ans
-    if [[ $ans == "y" ]]; then
+    if [ "$ans" == "y" ]; then
         crontab -l > $DIR/mycron
         # echo new cron into cron file
         sed -i "/mem_daemon/d" $DIR/mycron
