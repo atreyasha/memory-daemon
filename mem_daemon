@@ -1,9 +1,24 @@
 #!/bin/bash
 set -e
 
+# help display script
+function display_help() {
+    echo "Usage: $0 [dummy] [email]"
+    echo "Required arguments:"
+    echo "   dummy: 1 to indicate dummy test, 0 for real application"
+    echo "   email: 1 to trigger email sending, 0 to disable"
+    exit 1
+}
+
+# check number of arguments
+if [ "$#" -ne 2 ]; then
+    display_help
+fi
+
 # declare config directory
 DIR="/home/$USER/.config/mem_daemon"
 
+# start main conditional process
 if [ -f $DIR/mail.conf ];then
     # read key parameters for memory daemon
     if [ $1 -eq 1 ] && [ $2 -eq 1 ]; then
