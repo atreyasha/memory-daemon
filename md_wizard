@@ -29,10 +29,9 @@ install_mem_daemon(){
         cp ./aux/mail.conf $DIR/mail.conf
     fi
     if [ -z $(echo $PATH | grep "/home/$USER/bin") ]; then
-        echo -n "adding /home/$USER/bin to system path"
+        echo "adding /home/$USER/bin to system path"
         echo "export PATH=$PATH:/home/$USER/bin" >> /home/$USER/.bashrc
-        source /home/$USER/.bashrc
-        echo -n "... done"
+        source /home/$USER/.profile
     fi
     echo "copying executables to /home/$USER/bin..."
     cp mem_daemon /home/$USER/bin/mem_daemon
@@ -69,10 +68,10 @@ select option in "${options[@]}"; do
 	         break
 	         ;;
         3) echo "An email will be sent to your specified address, but fret not; no process will be killed"
-           mem_daemon 1 1
+           /home/$USER/bin/mem_daemon 1 1
 	         break
 	         ;;
-        4) mem_daemon 1 0
+        4) /home/$USER/bin/mem_daemon 1 0
            if [ $(echo $?) -eq 2 ]; then
               echo "please fill out $DIR/mail.conf before setting up a crontab"
               exit 1
