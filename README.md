@@ -101,6 +101,8 @@ This project offers a simple shell-based installation script.
 
     Now, the memory daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/mail.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
 
+    **Note:** The output of the crontab will be appended to ~/.config/mem_daemon/tmp.log for debugging purposes.
+
 ### Uninstallation
 
 In order to uninstall `mem_daemon`, simply run `md_wizard` within the cloned git repository and select `5`.
