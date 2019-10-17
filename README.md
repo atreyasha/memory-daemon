@@ -79,7 +79,10 @@ This project offers a simple shell-based installation script.
     5) Uninstall memory daemon
     #? 3
     ```
-    
+
+    Below is an example of the dummy email:
+    <img src="/img/screenshot.png" width="500">
+
 5. Finally, in order to set up the memory daemon as a regular service, we would need to install a `crontab` for it. Run `md_wizard` and select `4`. You will be prompted to input the periodicity (in minutes) with which the memory daemon checks your server. 
 
     ```
