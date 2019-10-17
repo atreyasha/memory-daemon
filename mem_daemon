@@ -50,7 +50,8 @@ if [ -f $DIR/md.conf ];then
             nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
             if [[ "$user" == "$LOCAL_USER" ]]; then
                 if [ $1 -eq 0 ]; then
-                    echo "killing: \n $proc"
+                    echo "killing:"
+                    echo "$proc"
                     kill $pid
                 fi
                 # check if the high RAM process is own
