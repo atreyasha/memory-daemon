@@ -1,7 +1,22 @@
 #!/bin/bash
 
+# help display script
+function display_help() {
+    echo "Usage: $0 [dummy] [email]"
+    echo "Required arguments:"
+    echo "   dummy: 1 to indicate dummy test, 0 for real application"
+    echo "   email: 1 to trigger email sending, 0 to disable"
+    exit 1
+}
+
+# check number of arguments
+if [ "$#" -ne 2 ]; then
+    display_help
+fi
+
 # base configuration directory
 DIR="/home/$USER/.config/mem_daemon"
+# number of columns for pretty select case
 COLUMNS=12
 
 # option menu
@@ -14,7 +29,7 @@ options=(
 )
 
 # installation function
-install_mem_daemon(){
+function install_mem_daemon(){
     echo  "checking for existence of $DIR and /home/$USER/bin; creating where necessary... "
     mkdir -p $DIR
     mkdir -p "/home/$USER/bin"
@@ -41,7 +56,7 @@ install_mem_daemon(){
 }
 
 # uninstallation function
-uninstall_mem_daemon(){
+function uninstall_mem_daemon(){
     # remove executables
     echo "removing executables from /home/$USER/bin..."
     rm -f /home/$USER/bin/mem_daemon
