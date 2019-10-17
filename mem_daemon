@@ -32,9 +32,7 @@ if [ -f $DIR/mail.conf ];then
             pid=$(echo "$proc" | awk 'FNR == 2 {print $1}')
             nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
             if [[ "$user" == "$(whoami)" ]]; then
-                if [ $1 -eq 1 ]; then
-                    echo "dummy test"
-                else
+                if [ $1 -eq 0 ]; then
                     echo "killing: \n $proc"
                     kill $pid
                 fi
