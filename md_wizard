@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # base configuration directory
-DIR="/home/$USER/.config/mem_daemon"
+LOCAL_USER=$(id -un)
+DIR="/home/$LOCAL_USER/.config/mem_daemon"
 # number of columns for pretty select case
 COLUMNS=12
 
@@ -16,9 +17,9 @@ options=(
 
 # installation function
 function install_mem_daemon(){
-    echo  "checking for existence of $DIR and /home/$USER/bin; creating where necessary... "
+    echo  "checking for existence of $DIR and /home/$LOCAL_USER/bin; creating where necessary... "
     mkdir -p $DIR
-    mkdir -p "/home/$USER/bin"
+    mkdir -p "/home/$LOCAL_USER/bin"
     echo "copying default md.configuration to $DIR..."
     if [ -f $DIR/md.conf ]; then
         read -rep "keep previous md.conf configuration? (y|n): " ans
@@ -29,24 +30,24 @@ function install_mem_daemon(){
     else
         cp ./aux/md.conf $DIR/md.conf
     fi
-    if [ -z $(echo $PATH | grep "/home/$USER/bin") ]; then
-        echo "adding /home/$USER/bin to system path"
-        echo "export PATH=$PATH:/home/$USER/bin" >> /home/$USER/.bashrc
-        source /home/$USER/.profile
+    if [ -z $(echo $PATH | grep "/home/$LOCAL_USER/bin") ]; then
+        echo "adding /home/$LOCAL_USER/bin to system path"
+        echo "export PATH=$PATH:/home/$LOCAL_USER/bin" >> /home/$LOCAL_USER/.bashrc
+        source /home/$LOCAL_USER/.profile
     fi
-    echo "copying executables to /home/$USER/bin..."
-    cp mem_daemon /home/$USER/bin/mem_daemon
-    cp mem_daemon_mail.py /home/$USER/bin/mem_daemon_mail
-    chmod +x /home/$USER/bin/mem_daemon_mail
+    echo "copying executables to /home/$LOCAL_USER/bin..."
+    cp mem_daemon /home/$LOCAL_USER/bin/mem_daemon
+    cp mem_daemon_mail.py /home/$LOCAL_USER/bin/mem_daemon_mail
+    chmod +x /home/$LOCAL_USER/bin/mem_daemon_mail
     echo "installation complete! fill out $DIR/md.conf with email-related details to use this service"
 }
 
 # uninstallation function
 function uninstall_mem_daemon(){
     # remove executables
-    echo "removing executables from /home/$USER/bin..."
-    rm -f /home/$USER/bin/mem_daemon
-    rm -f /home/$USER/bin/mem_daemon_mail
+    echo "removing executables from /home/$LOCAL_USER/bin..."
+    rm -f /home/$LOCAL_USER/bin/mem_daemon
+    rm -f /home/$LOCAL_USER/bin/mem_daemon_mail
     # remove crontab
     read -rep "remove mem_daemon crontab (if it exists)? (y|n): " ans
     if [[ $ans == "y" ]]; then
@@ -69,10 +70,10 @@ select option in "${options[@]}"; do
 	         break
 	         ;;
         3) echo "An email will be sent to your specified address, but fret not; no process will be killed"
-           /home/$USER/bin/mem_daemon 1 1
+           /home/$LOCAL_USER/bin/mem_daemon 1 1
 	         break
 	         ;;
-        4) /home/$USER/bin/mem_daemon 1 0
+        4) /home/$LOCAL_USER/bin/mem_daemon 1 0
            if [ $(echo $?) -eq 2 ] || [ $(echo $?) -eq 1 ]; then
               echo "please fill out $DIR/md.conf before setting up a crontab"
               exit 1
@@ -82,7 +83,7 @@ select option in "${options[@]}"; do
                 read -rep "With what periodicity should memory be checked (in minutes) ?: " ans
                 crontab -l > $DIR/mycron
                 # echo new cron into cron file
-                echo "*/$ans * * * * /home/$USER/bin/mem_daemon 0 1" >> $DIR/mycron
+                echo "*/$ans * * * * /home/$LOCAL_USER/bin/mem_daemon 0 1 >> $DIR/tmp.log" >> $DIR/mycron
                 # install new cron file
                 crontab $DIR/mycron
                 rm $DIR/mycron
