@@ -2,6 +2,7 @@
 
 # base configuration directory
 DIR="/home/$USER/.config/mem_daemon"
+COLUMNS=12
 
 # option menu
 options=(
