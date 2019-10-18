@@ -1,4 +1,4 @@
-## Memory Daemon
+## memory-daemon
 
 This project documents a memory daemon cron service that tracks the used RAM in a server and terminates a dominant user process if a defined used RAM threshold is exceeded. Additionally, this service sends an email to the user to inform her/him about the termination of a memory-consuming service.
 

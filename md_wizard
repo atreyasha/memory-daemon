@@ -9,11 +9,11 @@ COLUMNS=12
 
 # option menu
 options=(
-    "Install memory daemon"
+    "Install memory-daemon"
     "Edit md.conf"
-    "Test memory daemon with dummy trigger"
+    "Test memory-daemon with dummy trigger"
     "Add crontab for memory daemon"
-    "Uninstall memory daemon"
+    "Uninstall memory-daemon"
 )
 
 # installation function
