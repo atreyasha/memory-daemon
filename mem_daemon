@@ -24,8 +24,10 @@ DIR="/home/$LOCAL_USER/.config/mem_daemon"
 if [ -f $DIR/md.conf ];then
     # read key parameters for memory daemon
     if [ $1 -eq 1 ] && [ $2 -eq 1 ]; then
+        # in case of dummy test
         max_threshold=0
     else
+        # in case of real application
         max_threshold=$(grep "threshold" $DIR/md.conf | awk '{print $2}')
     fi
     receiver=$(grep "receiver" $DIR/md.conf | awk '{print $2}')
@@ -33,6 +35,7 @@ if [ -f $DIR/md.conf ];then
     pass=$(grep "pass" $DIR/md.conf | awk '{print $2}')
     smtp=$(grep "smtp" $DIR/md.conf | awk '{print $2}')
     port=$(grep "port" $DIR/md.conf | awk '{print $2}')
+    # check that all variables are defined
     if [ -z $max_threshold ] || [ -z $receiver ] || [ -z $sender ] || [ -z $pass ] || [ -z $smtp ] || [ -z $port ]; then
         echo "missing parameters in $DIR/md.conf, please ensure all parameters are defined"
         exit 2
@@ -50,6 +53,7 @@ if [ -f $DIR/md.conf ];then
             nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
             if [[ "$user" == "$LOCAL_USER" ]]; then
                 if [ $1 -eq 0 ]; then
+                    # add timestamp for logging purposes and kill process
                     echo "[$(date)]"
                     echo "killing:"
                     echo "$proc"
@@ -63,6 +67,7 @@ if [ -f $DIR/md.conf ];then
             fi
             # send out email
             if [ $2 -eq 1 ]; then
+            # only send email if option requested
             echo "sending email to $receiver"
             /home/$LOCAL_USER/bin/mem_daemon_mail --receiver "$receiver" --sender "$sender" \
                     --password "$pass" --text "$proc" --smtp "$smtp" --port "$port" \
@@ -73,6 +78,7 @@ if [ -f $DIR/md.conf ];then
         exit 0
     fi
 else
+    # output error and exit
     echo "$DIR/md.conf does not exist"
     exit 1
 fi
