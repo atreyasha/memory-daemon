@@ -21,11 +21,11 @@ This project offers a simple shell-based installation script.
     ```
     $ ./md_wizard
 
-    1) Install memory daemon
+    1) Install memory-daemon
     2) Edit md.conf
-    3) Test memory daemon with dummy trigger
-    4) Add crontab for memory daemon
-    5) Uninstall memory daemon
+    3) Test memory-daemon with dummy trigger
+    4) Add crontab for memory-daemon
+    5) Uninstall memory-daemon
     #? 1
     ```
 
@@ -34,11 +34,11 @@ This project offers a simple shell-based installation script.
     ```
     $ ./md_wizard
 
-    1) Install memory daemon
+    1) Install memory-daemon
     2) Edit md.conf
-    3) Test memory daemon with dummy trigger
-    4) Add crontab for memory daemon
-    5) Uninstall memory daemon
+    3) Test memory-daemon with dummy trigger
+    4) Add crontab for memory-daemon
+    5) Uninstall memory-daemon
     #? 2
     ```
 
@@ -50,7 +50,7 @@ This project offers a simple shell-based installation script.
 
     c. `pass`: plaintext password for the sender's email address (poses security risk; advisable to use a non-critical email address)
 
-    d. `threshold`: percentage of total memory used must cross this threshold in order to trigger the memory daemon into killing the most ram intensive process and sending the user an email
+    d. `threshold`: percentage of total memory used must cross this threshold in order to trigger the memory-daemon into killing the most ram intensive process and sending the user an email
 
     e. `smtp`: smtp address of the SMTP server for the sender's email provider
 
@@ -72,11 +72,11 @@ This project offers a simple shell-based installation script.
     ```
     $ ./md_wizard
 
-    1) Install memory daemon
+    1) Install memory-daemon
     2) Edit md.conf
-    3) Test memory daemon with dummy trigger
-    4) Add crontab for memory daemon
-    5) Uninstall memory daemon
+    3) Test memory-daemon with dummy trigger
+    4) Add crontab for memory-daemon
+    5) Uninstall memory-daemon
     #? 3
     ```
 
@@ -86,20 +86,20 @@ This project offers a simple shell-based installation script.
     <img src="/img/screenshot.png" width="600">
     </kbd>
 
-5. Finally, in order to set up the memory daemon as a regular service, we would need to install a `crontab` for it. Run `md_wizard` and select `4`. You will be prompted to input the periodicity (in minutes) with which the memory daemon checks your server. 
+5. Finally, in order to set up the memory-daemon as a regular service, we would need to install a `crontab` for it. Run `md_wizard` and select `4`. You will be prompted to input the periodicity (in minutes) with which the memory-daemon checks your server. 
 
     ```
     $ ./md_wizard
 
-    1) Install memory daemon
+    1) Install memory-daemon
     2) Edit md.conf
-    3) Test memory daemon with dummy trigger
-    4) Add crontab for memory daemon
-    5) Uninstall memory daemon
+    3) Test memory-daemon with dummy trigger
+    4) Add crontab for memory-daemon
+    5) Uninstall memory-daemon
     #? 4
     ```
 
-    Now, the memory daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/md.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
+    Now, the memory-daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/md.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
 
     **Note:** The output of the crontab will be appended to `~/.config/mem_daemon/tmp.log` for debugging purposes.
 
@@ -110,11 +110,11 @@ In order to uninstall `mem_daemon`, simply run `md_wizard` within the cloned git
 ```
 $ ./md_wizard
 
-1) Install memory daemon
+1) Install memory-daemon
 2) Edit md.conf
-3) Test memory daemon with dummy trigger
-4) Add crontab for memory daemon
-5) Uninstall memory daemon
+3) Test memory-daemon with dummy trigger
+4) Add crontab for memory-daemon
+5) Uninstall memory-daemon
 #? 5
 ```
 
