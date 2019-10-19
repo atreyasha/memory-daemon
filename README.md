@@ -99,6 +99,14 @@ This project offers a simple shell-based installation script.
     #? 4
     ```
 
+    **Troubleshooting:** If an error is thrown that crontabs are not installed for the user, simply run `crontab -e`. Then, a prompt should appear requesting for the text editor that should be used to edit the crontab. Next, you can enter a dummy crontab (which prints `hello world`) to initialize the service, such as:
+    
+    ```
+    *\1 * * * * /bin/echo "hello world"
+    ```
+    
+    Then, exit the editor and the following output should be received: `crontab: installing user crontab`. Now, you can proceed back with step 5. You can also safely remove the line containing the `/bin/echo` command after step 5.
+
     Now, the memory-daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/md.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
 
     **Note:** The output of the crontab will be appended to `~/.config/mem_daemon/tmp.log` for debugging purposes.
