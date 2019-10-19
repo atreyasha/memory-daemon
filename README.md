@@ -99,7 +99,7 @@ This project offers a simple shell-based installation script.
     #? 4
     ```
 
-    **Troubleshooting:** If an error is thrown that crontabs are not installed for the user, simply run `crontab -e`. Then, a prompt should appear requesting for the text editor that should be used to edit the crontab. Next, you can enter a dummy crontab (which prints `hello world`) to initialize the service, such as:
+    **Troubleshooting:** If an error is thrown that crontabs are not installed for the user, simply run `crontab -e`. Then, a prompt should appear requesting for the text editor that should be used to edit the crontab, for which you can choose your most preferred text editor. Next, you can enter a dummy crontab (which prints `hello world`) to initialize the service, such as:
     
     ```
     *\1 * * * * /bin/echo "hello world"
