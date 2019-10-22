@@ -36,7 +36,7 @@ if [ -f $DIR/md.conf ];then
     smtp=$(grep "smtp" $DIR/md.conf | awk '{print $2}')
     port=$(grep "port" $DIR/md.conf | awk '{print $2}')
     # check that all variables are defined
-    if [ -z $max_threshold ] || [ -z $receiver ] || [ -z $sender ] || [ -z $pass ] || [ -z $smtp ] || [ -z $port ]; then
+    if [ -z "$max_threshold" ] || [ -z "$receiver" ] || [ -z "$sender" ] || [ -z "$pass" ] || [ -z "$smtp" ] || [ -z "$port" ]; then
         echo "missing parameters in $DIR/md.conf, please ensure all parameters are defined"
         exit 2
     else

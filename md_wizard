@@ -31,7 +31,7 @@ function install_mem_daemon(){
     else
         cp ./aux/md.conf $DIR/md.conf
     fi
-    if [ -z $(echo $PATH | grep "/home/$LOCAL_USER/bin") ]; then
+    if [ -z "$(echo $PATH | grep /home/$LOCAL_USER/bin)" ]; then
         echo "adding /home/$LOCAL_USER/bin to system path"
         echo "export PATH=$PATH:/home/$LOCAL_USER/bin" >> /home/$LOCAL_USER/.bashrc
         source /home/$LOCAL_USER/.profile
