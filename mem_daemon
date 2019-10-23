@@ -52,7 +52,7 @@ if [ -f $DIR/md.conf ];then
             pid=$(echo "$proc" | awk 'FNR == 2 {print $1}')
             nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
             # ensure that user is the owner of ram intensive process
-            if [[ "$user" == "$LOCAL_USER" ]]; then
+            if [ "$user" == "$LOCAL_USER" ]; then
                 # check for real application or dummy test
                 if [ $1 -eq 0 ]; then
                     # add timestamp for logging purposes and kill process
