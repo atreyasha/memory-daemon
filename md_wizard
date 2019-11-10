@@ -76,7 +76,7 @@ select option in "${options[@]}"; do
 	         ;;
         4) # execute dummy check to see if all variables are defined
            /home/$LOCAL_USER/bin/mem_daemon 1 0
-           if [ (echo $?) -eq 2 ]; then
+           if [ $(echo $?) -eq 2 ]; then
               echo "please fill out $DIR/md.conf before setting up a crontab"
               exit 1
            fi
