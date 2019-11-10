@@ -60,6 +60,10 @@ if [ -f $DIR/md.conf ];then
                     echo "killing own process:"
                     echo "$proc"
                     kill $pid
+                else
+                    # add logging for dummy test
+                    echo "[$(date)]"
+                    echo "testing memory-daemon"
                 fi
                 # check if the high RAM process is own
                 self=1
