@@ -57,7 +57,7 @@ if [ -f $DIR/md.conf ];then
                 if [ $1 -eq 0 ]; then
                     # add timestamp for logging purposes and kill process
                     echo "[$(date)]"
-                    echo "killing:"
+                    echo "killing own process:"
                     echo "$proc"
                     kill $pid
                 fi
@@ -65,6 +65,8 @@ if [ -f $DIR/md.conf ];then
                 self=1
             else
                 # check if the high RAM process is from other user
+                echo "[$(date)]"
+                echo "notifying on foreign user ram-intensive process"
                 self=0
             fi
             # send out email
