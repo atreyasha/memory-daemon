@@ -2,7 +2,7 @@
 
 This project documents a memory daemon cron service that tracks the used RAM in a server and terminates a dominant user process if a defined used RAM threshold is exceeded. Additionally, this service sends an email to the user to inform her/him about the termination of a memory-consuming service.
 
-This service is not meant as a replacement for server management programs, but is rather meant for situations where servers are not well managed by admins and where users want to manage their own memory consuming processes to prevent annoying server crashes.
+This service is not meant as a replacement for server management programs, but is rather meant for situations where users want to manage their own memory consuming processes to prevent annoying server crashes.
 
 **Important:** This service only has permissions to terminate processes from the user which installed/uses it. It cannot terminate other users' processes. In the case that another user's process results in high RAM usage, an email will be sent to registered users warning them about the high RAM usage.
 
@@ -126,4 +126,4 @@ $ ./md_wizard
 #? 5
 ```
 
-This will remove the transferred binaries and will prompt the user to decide if the relevant `crontab` should be removed.
+This will remove the transferred executables and will prompt the user to decide if the relevant `crontab` should be removed.
