@@ -8,7 +8,7 @@ cronjob() {
 		read -rep "With what periodicity should memory be checked (in minutes) ?: " ans
 		crontab -l > "$CONF_PATH/mycron"
 		# echo new cron into cron file
-		echo "*/$ans * * * * $PREFIX/bin/mem_daemon 0 1 >> $CONF_PATH/md.log" \
+		echo "*/$ans * * * * $PREFIX/bin/mem_daemon 1 1 >> $CONF_PATH/md.log" \
          >> "$CONF_PATH/mycron"
 		# install new cron file
 		crontab "$CONF_PATH/mycron"

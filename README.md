@@ -1,6 +1,6 @@
 ## memory-daemon
 
-This project documents a memory daemon cron service that tracks the used RAM in a server and terminates a dominant user process if a defined used RAM threshold is exceeded. Additionally, this service sends an email to the user to inform her/him about the termination of a memory-consuming service.
+This project documents a memory-daemon cron service that tracks the used RAM in a server and terminates a dominant user process if a defined used RAM threshold is exceeded. Additionally, this service sends an email to the user to inform her/him about the termination of a memory-consuming service.
 
 This service is not meant as a replacement for server management programs, but is rather meant for situations where users want to manage their own memory consuming processes to prevent annoying server crashes.
 
@@ -16,9 +16,9 @@ This project offers a simple shell-based installation script.
     $ make install
     ```
 
-2. If all goes well, edit the default config file `~/.config/mem_daemon/md.conf`
+2. If all goes well, edit the default configuration file `~/.config/mem_daemon/md.conf`
 
-    The following options must be configured in the configuration file in order to use this service:
+    The following options must be configured in order to use this service:
 
     a. `receiver`: receiver's email address regarding RAM warnings/termination notifications. Multiple emails can be configured if they are all comma-separated.
 
@@ -26,7 +26,7 @@ This project offers a simple shell-based installation script.
 
     c. `pass`: plaintext password for the sender's email address (poses security risk; advisable to use a non-critical email address)
 
-    d. `threshold`: percentage of total memory used must cross this threshold in order to trigger the memory-daemon into killing the most ram intensive process and sending the user an email
+    d. `threshold`: percentage of total memory used must cross this `integer` threshold in order to trigger the memory-daemon into killing the most ram intensive process and sending the user an email
 
     e. `smtp`: smtp address of the SMTP server for the sender's email provider
 
