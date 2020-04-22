@@ -40,7 +40,8 @@ function install_mem_daemon(){
     cp mem_daemon /home/$LOCAL_USER/bin/mem_daemon
     cp mem_daemon_mail.py /home/$LOCAL_USER/bin/mem_daemon_mail
     chmod +x /home/$LOCAL_USER/bin/mem_daemon_mail
-    echo "installation complete! fill out $DIR/md.conf with email-related details to use this service"
+    echo "installation complete!"
+		echo "fill out $DIR/md.conf with email-related details to use this service"
 }
 
 # uninstallation function
