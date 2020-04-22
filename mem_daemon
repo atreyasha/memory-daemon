@@ -1,92 +1,110 @@
 #!/bin/bash
-set -e
 
 # help display script
-function display_help() {
-    echo "Usage: $0 [dummy] [email]"
-    echo "Required arguments:"
-    echo "   dummy: 1 to indicate dummy test, 0 for real application"
-    echo "   email: 1 to trigger email sending, 0 to disable"
+usage() {
+  cat <<EOF
+Usage: mem_daemon <real> <email> [conf_path]
+
+Required arguments:
+    real <int>: 1 for real-use, 0 for dummy test
+    email <int>: 1 to allow emails, 0 to disable
+
+Optional arguments:
+    conf_path <path>: path to md.conf file
+EOF
+}
+
+main() {
+  # get local variables
+  LOCAL_USER=$(id -un)
+  REAL=$1
+  EMAIL=$2
+  # declare config directory
+  if [[ -n "$3" ]]; then
+    CONF="$3"
+  else
+    CONF="/home/$LOCAL_USER/.config/mem_daemon/md.conf"
+  fi
+  # start main conditional process
+  if [ -f $CONF ];then
+    # read key parameters for memory daemon
+    if [ $REAL -eq 0 ]; then
+      # in case of dummy test
+      max_threshold=0
+    else
+      # in case of real application
+      max_threshold=$(grep "threshold" $CONF | awk '{print $2}')
+    fi
+    receiver=$(grep "receiver" $CONF | awk '{print $2}')
+    sender=$(grep "sender" $CONF | awk '{print $2}')
+    pass=$(grep "pass" $CONF | awk '{print $2}')
+    smtp=$(grep "smtp" $CONF | awk '{print $2}')
+    port=$(grep "port" $CONF | awk '{print $2}')
+    # check that all variables are defined
+    if [ -z "$max_threshold" ] || [ -z "$receiver" ] || [ -z "$sender" ] || [ -z "$pass" ] || [ -z "$smtp" ] || [ -z "$port" ]; then
+      echo "missing parameters in $CONF, please ensure all parameters are defined" >&2
+      exit 1
+    else
+      # check if memory threshold is exceeded
+      exceed=$(free | grep Mem | awk '{print $3/$2 * 100.0}' \
+                 | awk -vt1=$max_threshold '{print ($1>=t1)?1:0}')
+      # if memory is exceeded, capture proc-doc to trigger email
+      if [ $exceed -eq 1 ]; then
+        # get highest memory process
+        proc=$(ps -eo pid:10,user:20,%cpu,%mem,args --sort -%mem | \
+                 head | awk 'NR >= 0 && NR <= 2 {print}')
+        user=$(echo "$proc" | awk 'FNR == 2 {print $2}')
+        pid=$(echo "$proc" | awk 'FNR == 2 {print $1}')
+        nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
+        # ensure that user is the owner of ram intensive process
+        if [ "$user" == "$LOCAL_USER" ]; then
+          # check for real application or dummy test
+          if [ $REAL -eq 1 ]; then
+            # add timestamp for logging purposes and kill process
+            echo "[$(date)]"
+            echo "killing own process:"
+            echo "$proc"
+            kill $pid
+          else
+            # add logging for dummy test
+            echo "[$(date)]"
+            echo "testing memory-daemon"
+          fi
+          # check if the high RAM process is own
+          self=1
+        else
+          # check if the high RAM process is from other user
+          echo "[$(date)]"
+          echo "notifying on foreign user ram-intensive process"
+          self=0
+        fi
+        # send out email
+        if [ $EMAIL -eq 1 ]; then
+          # only send email if option requested
+          echo "sending email to $receiver"
+          /home/$LOCAL_USER/bin/mem_daemon_mail --receiver "$receiver" --sender "$sender" \
+                                                --password "$pass" --text "$proc" --smtp "$smtp" --port "$port" \
+                                                --threshold "$max_threshold" --columns-log $nc --selfie $self
+        fi
+      fi
+      # leave subshell once all is well
+      exit 0
+    fi
+  else
+    # output error and exit
+    echo "$CONF does not exist" >&2
     exit 1
+  fi
 }
 
 # check number of arguments
-if [ "$#" -ne 2 ]; then
-    display_help
-fi
-
-# get local user even if running on crontab
-LOCAL_USER=$(id -un)
-# declare config directory
-DIR="/home/$LOCAL_USER/.config/mem_daemon"
-
-# start main conditional process
-if [ -f $DIR/md.conf ];then
-    # read key parameters for memory daemon
-    if [ $1 -eq 1 ] && [ $2 -eq 1 ]; then
-        # in case of dummy test
-        max_threshold=0
-    else
-        # in case of real application
-        max_threshold=$(grep "threshold" $DIR/md.conf | awk '{print $2}')
-    fi
-    receiver=$(grep "receiver" $DIR/md.conf | awk '{print $2}')
-    sender=$(grep "sender" $DIR/md.conf | awk '{print $2}')
-    pass=$(grep "pass" $DIR/md.conf | awk '{print $2}')
-    smtp=$(grep "smtp" $DIR/md.conf | awk '{print $2}')
-    port=$(grep "port" $DIR/md.conf | awk '{print $2}')
-    # check that all variables are defined
-    if [ -z "$max_threshold" ] || [ -z "$receiver" ] || [ -z "$sender" ] || [ -z "$pass" ] || [ -z "$smtp" ] || [ -z "$port" ]; then
-        echo "missing parameters in $DIR/md.conf, please ensure all parameters are defined"
-        exit 2
-    else
-        # check if memory threshold is exceeded
-        exceed=$(free | grep Mem | awk '{print $3/$2 * 100.0}' \
-                    | awk -vt1=$max_threshold '{print ($1>=t1)?1:0}')
-        # if memory is exceeded, capture proc-doc to trigger email
-        if [ $exceed -eq 1 ]; then
-            # get highest memory process
-            proc=$(ps -eo pid:10,user:20,%cpu,%mem,args --sort -%mem | \
-                    head | awk 'NR >= 0 && NR <= 2 {print}')
-            user=$(echo "$proc" | awk 'FNR == 2 {print $2}')
-            pid=$(echo "$proc" | awk 'FNR == 2 {print $1}')
-            nc=$(echo "$proc" | awk 'FNR == 1 {print NF}')
-            # ensure that user is the owner of ram intensive process
-            if [ "$user" == "$LOCAL_USER" ]; then
-                # check for real application or dummy test
-                if [ $1 -eq 0 ]; then
-                    # add timestamp for logging purposes and kill process
-                    echo "[$(date)]"
-                    echo "killing own process:"
-                    echo "$proc"
-                    kill $pid
-                else
-                    # add logging for dummy test
-                    echo "[$(date)]"
-                    echo "testing memory-daemon"
-                fi
-                # check if the high RAM process is own
-                self=1
-            else
-                # check if the high RAM process is from other user
-                echo "[$(date)]"
-                echo "notifying on foreign user ram-intensive process"
-                self=0
-            fi
-            # send out email
-            if [ $2 -eq 1 ]; then
-            # only send email if option requested
-            echo "sending email to $receiver"
-            /home/$LOCAL_USER/bin/mem_daemon_mail --receiver "$receiver" --sender "$sender" \
-                    --password "$pass" --text "$proc" --smtp "$smtp" --port "$port" \
-                    --threshold "$max_threshold" --columns-log $nc --selfie $self
-            fi
-        fi
-        # leave subshell once all is well
-        exit 0
-    fi
+if [ "$#" -lt 2 ]; then
+  {
+    echo "Insufficient arguments supplied"
+    usage
+  } >&2
+  exit 1
 else
-    # output error and exit
-    echo "$DIR/md.conf does not exist"
-    exit 1
+  set -e
+  main "$@"
 fi

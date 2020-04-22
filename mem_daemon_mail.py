@@ -9,10 +9,27 @@ from email.utils import formatdate
 from email.mime.text import MIMEText
 
 def getCurrentTime():
+    """
+    Function that returns a date-time string for logging
+    """
     return datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
 def sendMail(receiver,sender,password,text,smtp,port,
              threshold,col_log,selfie):
+    """
+    Function to send out email based on output of mem_daemon
+
+    Args:
+        receiver (str): comma-separated receiver email address(es)
+        sender (str): sender email adress
+        password (str): plaintext password for sender (unsafe)
+        text (str): proc string to display for process termination
+        smtp (str): smtp domain of sender
+        port (int): smtp port
+        threshold (int): RAM threshold exceeded
+        col_log (int): number of columns in proc-message
+        selfie (int): 1 if own user, 0 if foreign user
+    """
     # define mail variables
     subject_1 = "[Process Termination Notification] "
     subject_0 = "[RAM Threshold Notification] "
