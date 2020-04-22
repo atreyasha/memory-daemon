@@ -8,8 +8,6 @@ This service is not meant as a replacement for server management programs, but i
 
 ### Installation
 
-This project offers a simple shell-based installation script.
-
 1. Install `mem_daemon`:
 
     ```
