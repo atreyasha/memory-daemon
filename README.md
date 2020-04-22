@@ -10,19 +10,13 @@ This service is not meant as a replacement for server management programs, but i
 
 This project offers a simple shell-based installation script.
 
-1. Log into your remote server and clone this repository.
-
-    ```shell
-    $ git clone https://github.com/atreyasha/memory-daemon.git && cd memory-daemon
-    ```
-    
-2. Install `mem_daemon`:
+1. Install `mem_daemon`:
 
     ```
     $ make install
     ```
 
-3. If all goes well, edit the default config file `~/.config/mem_daemon/md.conf`
+2. If all goes well, edit the default config file `~/.config/mem_daemon/md.conf`
 
     The following options must be configured in the configuration file in order to use this service:
 
@@ -49,7 +43,7 @@ This project offers a simple shell-based installation script.
     port 587
     ```
 
-4. Once all the above options have been configured, we can test the service. An email will be sent to your specified account and no process will be killed. Please check your spam folder in case nothing appears. For this, execute the following:
+3. Once all the above options have been configured, we can test the service. An email will be sent to your specified account and no process will be killed. Please check your spam folder in case nothing appears. For this, execute the following:
 
     ```
     $ make test
@@ -61,7 +55,7 @@ This project offers a simple shell-based installation script.
     <img src="/img/screenshot.png" width="600">
     </kbd>
 
-5. Finally, in order to set up the memory-daemon as a regular service, we would need to install a `crontab` for it. You will be prompted to input the periodicity (in minutes) with which the memory-daemon checks your server. Execute the following: 
+4. Finally, in order to set up the memory-daemon as a regular service, we would need to install a `crontab` for it. You will be prompted to input the periodicity (in minutes) with which the memory-daemon checks your server. Execute the following: 
 
     ```
     $ make cronjob
@@ -73,7 +67,7 @@ This project offers a simple shell-based installation script.
     *\1 * * * * /bin/echo "hello world"
     ```
     
-    Then, exit the editor and the following output should be received: `crontab: installing user crontab`. Now, you can proceed back with step 5. You can also safely remove the line containing the `/bin/echo` command after step 5.
+    Then, exit the editor and the following output should be received: `crontab: installing user crontab`. Now, you can proceed back with step 4. You can also safely remove the line containing the `/bin/echo` command after step 4.
 
     Now, the memory-daemon is activated. In order to test out its utility, you can manually set the threshold in `~/.config/mem_daemon/md.conf` to a low value, such as `30`. Then, run a RAM intensive script and check if it gets terminated by `mem_daemon` and if you receive an email notification about it.
 
