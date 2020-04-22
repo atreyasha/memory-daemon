@@ -96,8 +96,8 @@ select option in "${options[@]}"; do
            fi
            break
            ;;
-	      5) uninstall_mem_daemon
-	         break
-	         ;;
+        5) uninstall_mem_daemon
+           break
+           ;;
     esac
 done
