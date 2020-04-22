@@ -61,14 +61,12 @@ This project offers a simple shell-based installation script.
     <img src="/img/screenshot.png" width="600">
     </kbd>
 
-5. Finally, in order to set up the memory-daemon as a regular service, we would need to install a `crontab` for it. Execute the following: 
+5. Finally, in order to set up the memory-daemon as a regular service, we would need to install a `crontab` for it. You will be prompted to input the periodicity (in minutes) with which the memory-daemon checks your server. Execute the following: 
 
     ```
     $ make cronjob
     ```
-
-		You will be prompted to input the periodicity (in minutes) with which the memory-daemon checks your server. 
-
+    
     **Troubleshooting:** If an error is thrown that crontabs are not installed for the user, simply run `crontab -e`. Then, a prompt should appear requesting for the text editor that should be used to edit the crontab, for which you can choose your most preferred text editor. Next, you can enter a dummy crontab (which prints `hello world`) to initialize the service, such as:
     
     ```
