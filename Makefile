@@ -23,4 +23,4 @@ test:
 
 .PHONY: cronjob
 cronjob:
-	./utils/crontab.sh $(PREFIX) $(CONF_PATH)
+	./utils/cronjob.sh $(PREFIX) $(CONF_PATH)
